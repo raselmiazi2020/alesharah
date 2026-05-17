@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alesharah | Payroll System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f1f5f9; }
+        .folder-card:hover { transform: translateY(-5px); border-color: #3b82f6; }
+        .input-box { border: 1px solid #e2e8f0; border-radius: 6px; padding: 4px; width: 60px; text-align: center; font-weight: 700; }
+        .row-paid { background-color: #f0fdf4 !important; border-left: 4px solid #22c55e; }
+        @media print { .no-print { display: none !important; } .main-table { width: 100% !important; box-shadow: none !important; } }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-7xl mx-auto">
+        <div class="mb-10 no-print flex flex-col md:flex-row justify-between items-center gap-6">
+            <div>
+                <h1 class="text-4xl font-black text-slate-900 italic tracking-tighter">ALESHARAH <span class="text-blue-600">SYSTEM</span></h1>
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.4em]">Server Directory: SalarySheet/data/</p>
+            </div>
+            
+            <div class="bg-white p-4 rounded-3xl shadow-sm border border-slate-200 flex items-center gap-4">
+                <div class="flex flex-col border-r pr-4">
+                    <span class="text-[9px] font-bold text-slate-400 uppercase">Working Days</span>
+                    <input type="number" id="globalWorkingDays" value="26" onchange="refreshTable()" class="outline-none font-bold text-sm bg-transparent w-12 text-blue-600">
+                </div>
+                
+                <div class="flex flex-col">
+                    <span class="text-[9px] font-bold text-slate-400 uppercase">Month</span>
+                    <input type="month" id="uploadMonth" class="outline-none font-bold text-sm bg-transparent">
+                </div>
+
+                <label for="excelUpload" class="bg-slate-900 text-white px-6 py-2 rounded-xl font-bold text-xs cursor-pointer hover:bg-black transition">+ New Upload</label>
+                <input type="file" id="excelUpload" accept=".xlsx" class="hidden">
+            </div>
+        </div>
+
+        <div id="folderSection" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 mb-12 no-print"></div>
+
+        <div id="dataView" class="hidden animate-in fade-in slide-in-from-bottom-5">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h2 id="activeFolderName" class="text-2xl font-black text-slate-800 uppercase italic">Month: -</h2>
+                </div>
+                <div class="flex gap-2 no-print">
+                    <button onclick="window.print()" class="bg-white border px-4 py-2 rounded-xl font-bold text-xs">Print</button>
+                    <button onclick="closeFolder()" class="bg-red-50 text-red-600 px-4 py-2 rounded-xl font-bold text-xs">Close</button>
+                </div>
+            </div>
+            <div class="bg-white rounded-[2.5rem] shadow-2xl overflow-hidden border border-slate-200">
+                <table class="w-full text-left text-sm">
+                    <thead class="bg-slate-900 text-white text-[10px] uppercase font-black">
+                        <tr>
+                            <th class="p-6">Paid</th>
+                            <th class="p-6">Employee Info</th>
+                            <th class="p-6 text-center">Basic</th>
+                            <th class="p-6 text-center">Present</th>
+                            <th class="p-6 text-center">OT Hours</th>
+                            <th class="p-6 text-center">Bonus</th>
+                            <th class="p-6 text-right">Net Payable</th>
+                        </tr>
+                    </thead>
+                    <tbody id="payrollBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentOpenDate = "";
+
+        document.addEventListener('DOMContentLoaded', fetchFoldersFromServer);
+
+        async function fetchFoldersFromServer() {
+            try {
+                const response = await fetch("save.php");
+                const result = await response.json();
+                if (result.status === "success") {
+                    renderFolders(result.folders);
+                }
+            } catch (err) { console.error("Could not load directory:", err); }
+        }
+
+        document.getElementById('excelUpload').addEventListener('change', async function(e) {
+            const date = document.getElementById('uploadMonth').value;
+            const workingDays = document.getElementById('globalWorkingDays').value || 26;
+            if(!date) { alert("Select month first"); return; }
+            
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.onload = async function(event) {
+                const data = new Uint8Array(event.target.result);
+                const workbook = XLSX.read(data, {type: 'array'});
+                const jsonData = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
+                
+                const processedData = jsonData.map(emp => ({
+                    ID: emp.ID || '000', 
+                    Name: emp.Name || 'Unnamed', 
+                    Designation: emp.Designation || 'Staff',
+                    Basic: parseFloat(emp.Basic) || 0, 
+                    presentDays: workingDays, // Use top input value for default
+                    otHours: 0, 
+                    bonus: 0, 
+                    isPaid: false
+                }));
+
+                localStorage.setItem(`folder_${date}`, JSON.stringify(processedData));
+                await syncToServer(date, processedData);
+                fetchFoldersFromServer();
+            };
+            reader.readAsArrayBuffer(file);
+        });
+
+        async function syncToServer(date, data) {
+            const worksheet = XLSX.utils.json_to_sheet(data);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Payroll");
+            const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+            const fileBlob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+
+            const formData = new FormData();
+            formData.append('date', date);
+            formData.append('excelFile', fileBlob, `Payroll_${date}.xlsx`);
+            await fetch("save.php", { method: 'POST', body: formData });
+        }
+
+        function renderFolders(folderList) {
+            const folderSection = document.getElementById('folderSection');
+            folderSection.innerHTML = "";
+            const localFolders = Object.keys(localStorage).filter(k => k.startsWith('folder_')).map(k => k.replace('folder_', ''));
+            const combined = [...new Set([...folderList, ...localFolders])].sort().reverse();
+
+            combined.forEach(dateLabel => {
+                const div = document.createElement('div');
+                div.className = "folder-card bg-white p-6 rounded-[2rem] border cursor-pointer flex flex-col items-center shadow-sm transition-all";
+                div.onclick = () => openFolder(dateLabel);
+                div.innerHTML = `<div class="text-5xl mb-3">📄</div><p class="font-black text-slate-800 text-sm uppercase">${dateLabel}</p>`;
+                folderSection.appendChild(div);
+            });
+        }
+
+        function openFolder(date) {
+            currentOpenDate = date;
+            const employees = JSON.parse(localStorage.getItem(`folder_${date}`)) || [];
+            const globalDays = parseFloat(document.getElementById('globalWorkingDays').value) || 26;
+            const body = document.getElementById('payrollBody');
+            
+            document.getElementById('activeFolderName').innerText = `MONTH: ${date}`;
+            document.getElementById('dataView').classList.remove('hidden');
+            body.innerHTML = "";
+
+            employees.forEach((emp, index) => {
+                const basic = parseFloat(emp.Basic) || 0;
+                // FORMULA: (Basic / Global Working Days * Employee Present Days) + OT Pay + Bonus
+                const dailyRate = basic / globalDays;
+                const netPay = (dailyRate * (emp.presentDays || 0)) + ((emp.otHours || 0) * (dailyRate/8*2)) + parseFloat(emp.bonus || 0);
+                
+                const tr = document.createElement('tr');
+                tr.className = `border-b ${emp.isPaid ? 'row-paid' : ''}`;
+                tr.innerHTML = `
+                    <td class="p-6 text-center"><input type="checkbox" ${emp.isPaid ? 'checked' : ''} onchange="updateEmpData('${date}', ${index}, 'isPaid', this.checked)"></td>
+                    <td class="p-6 font-bold">${emp.Name}</td>
+                    <td class="p-6 text-center">৳${basic.toLocaleString()}</td>
+                    <td class="p-6 text-center"><input type="number" value="${emp.presentDays}" onchange="updateEmpData('${date}', ${index}, 'presentDays', this.value)" class="input-box"></td>
+                    <td class="p-6 text-center"><input type="number" value="${emp.otHours}" onchange="updateEmpData('${date}', ${index}, 'otHours', this.value)" class="input-box text-orange-600"></td>
+                    <td class="p-6 text-center"><input type="number" value="${emp.bonus}" onchange="updateEmpData('${date}', ${index}, 'bonus', this.value)" class="input-box text-green-600"></td>
+                    <td class="p-6 text-right font-black">৳${Math.round(netPay).toLocaleString()}</td>
+                `;
+                body.appendChild(tr);
+            });
+        }
+
+        async function updateEmpData(date, index, field, value) {
+            const data = JSON.parse(localStorage.getItem(`folder_${date}`));
+            data[index][field] = (field === 'isPaid') ? value : (parseFloat(value) || 0);
+            localStorage.setItem(`folder_${date}`, JSON.stringify(data));
+            await syncToServer(date, data); 
+            openFolder(date);
+        }
+
+        function refreshTable() {
+            if(currentOpenDate) openFolder(currentOpenDate);
+        }
+
+        function closeFolder() { document.getElementById('dataView').classList.add('hidden'); currentOpenDate = ""; }
+    </script>
+</body>
+</html>

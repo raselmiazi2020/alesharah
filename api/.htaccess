@@ -1,0 +1,17 @@
+# DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION BEGIN
+PassengerAppRoot "/home/aleshara/backendmis"
+PassengerBaseURI "/api"
+PassengerNodejs "/home/aleshara/nodevenv/backendmis/24/bin/node"
+PassengerAppType node
+PassengerStartupFile server.js
+# DO NOT REMOVE. CLOUDLINUX PASSENGER CONFIGURATION END
+# DO NOT REMOVE OR MODIFY. CLOUDLINUX ENV VARS CONFIGURATION BEGIN
+<IfModule Litespeed>
+SetEnv DB_HOST localhost
+SetEnv DB_USER aleshara_order
+SetEnv DB_PASSWORD Rasel@452
+SetEnv DB_NAME aleshara_order_production_db
+SetEnv JWT_SECRET your_super_secret_jwt_key_change_this_in_production
+SetEnv JWT_EXPIRE 7d
+</IfModule>
+# DO NOT REMOVE OR MODIFY. CLOUDLINUX ENV VARS CONFIGURATION END

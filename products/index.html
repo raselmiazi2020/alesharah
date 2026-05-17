@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en-US" class="no-js">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="shortcut icon" type="image/x-icon" href="../wp-content/themes/alesharah/images/favicon.ico">
+    <script>(function(html){html.className = html.className.replace(/\bno-js\b/,'js')})(document.documentElement);</script>
+    <title>Products Gallery – Al Esharah Fashion Ltd</title>
+    
+    <!-- Magnific Popup CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css">
+    
+    <style type="text/css">
+        img.wp-smiley,
+        img.emoji {
+            display: inline !important;
+            border: none !important;
+            box-shadow: none !important;
+            height: 1em !important;
+            width: 1em !important;
+            margin: 0 .07em !important;
+            vertical-align: -0.1em !important;
+            background: none !important;
+            padding: 0 !important;
+        }
+        
+        /* ============ PROFESSIONAL GALLERY CSS ============ */
+        
+        /* Gallery Container */
+        #gallery-container {
+            margin-top: 30px;
+            min-height: 400px;
+        }
+        
+        /* Gallery Item */
+        .gallery_product {
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: #fff;
+            height: 300px; /* Fixed height */
+        }
+        
+        .gallery_product:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* Image Link */
+        .gallery_product a {
+            display: block;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            text-decoration: none;
+        }
+        
+        /* Image Styles */
+        .gallery_product img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.5s ease;
+        }
+        
+        .gallery_product:hover img {
+            transform: scale(1.05);
+        }
+        
+        /* Lazy Loading */
+        .lazy {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .lazy-loaded {
+            opacity: 1;
+        }
+        
+        /* Image Overlay */
+        .image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0) 60%, rgba(0,0,0,0.7) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: flex-end;
+            padding: 15px;
+        }
+        
+        .gallery_product:hover .image-overlay {
+            opacity: 1;
+        }
+        
+        .category-badge {
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transform: translateY(10px);
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery_product:hover .category-badge {
+            transform: translateY(0);
+        }
+        
+        /* Gallery Title */
+        .gallery-title {
+            text-align: center;
+            margin: 30px 0 20px;
+            font-size: 2.5em;
+            color: #222;
+            font-weight: 300;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .gallery-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 2px;
+            background: #333;
+        }
+        
+        /* Filter Buttons */
+        .filter-button {
+            margin: 5px;
+            padding: 8px 20px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 30px;
+            color: #555;
+            font-weight: 600;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .filter-button:hover {
+            background: #333;
+            color: white;
+            border-color: #333;
+        }
+        
+        .filter-button.active {
+            background: #333;
+            color: white;
+            border-color: #333;
+        }
+        
+        /* Loading Indicator */
+        .loading-indicator {
+            text-align: center;
+            padding: 40px 0;
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #333;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* No Images Message */
+        .no-images {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+            display: none;
+        }
+        
+        /* Lightbox Styles */
+        .lightbox-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .lightbox-overlay.active {
+            opacity: 1;
+        }
+        
+        .lightbox-overlay img {
+            max-width: 90%;
+            max-height: 90%;
+        }
+        
+        .close-lightbox {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            padding: 10px;
+        }
+        
+        /* Responsive Design */
+        @media (min-width: 1200px) {
+            .gallery_product {
+                height: 320px;
+            }
+        }
+        
+        @media (min-width: 992px) and (max-width: 1199px) {
+            .gallery_product {
+                height: 280px;
+            }
+        }
+        
+        @media (min-width: 768px) and (max-width: 991px) {
+            .gallery_product {
+                height: 250px;
+            }
+            
+            .gallery-title {
+                font-size: 2em;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .gallery_product {
+                height: 220px;
+            }
+            
+            .gallery-title {
+                font-size: 1.8em;
+            }
+            
+            .filter-button {
+                padding: 6px 15px;
+                font-size: 11px;
+                margin: 3px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .gallery_product {
+                height: 200px;
+            }
+        }
+    </style>
+    
+    <!-- Existing CSS Files -->
+    <link rel='stylesheet' id='contact-form-7-css' href='../wp-content/plugins/contact-form-7/includes/css/styles4906.css?ver=4.7' type='text/css' media='all' />
+    <link rel='stylesheet' id='MyStyle-css' href='../wp-content/themes/alesharah/css/bootstrap.mina721.css?ver=4.7.13' type='text/css' media='all' />
+    <link rel='stylesheet' id='MyStyle3-css' href='../wp-content/themes/alesharah/css/owl.carousela721.css?ver=4.7.13' type='text/css' media='all' />
+    <link rel='stylesheet' id='MyStyle4-css' href='../wp-content/themes/alesharah/css/owl.theme.defaulta721.css?ver=4.7.13' type='text/css' media='all' />
+    <link rel='stylesheet' id='MyStyle1-css' href='../wp-content/themes/alesharah/css/animatea721.css?ver=4.7.13' type='text/css' media='all' />
+    <link rel='stylesheet' id='MyStyle8-css' href='../wp-content/themes/alesharah/css/grid-componenta721.css?ver=4.7.13' type='text/css' media='all' />
+    <link rel='stylesheet' id='MyStyle2-css' href='../wp-content/themes/alesharah/css/font-awesome.mina721.css?ver=4.7.13' type='text/css' media='all' />
+    <link rel='stylesheet' id='MyStyle7-css' href='https://fonts.googleapis.com/css?family=Rubik%3A300%2C400%2C500%2C700&amp;ver=4.7.13' type='text/css' media='all' />
+    <link rel='stylesheet' id='MyStyle5-css' href='../wp-content/themes/alesharah/css/stylea721.css?ver=4.7.13' type='text/css' media='all' />
+    <link rel='stylesheet' id='MyStyle6-css' href='../wp-content/themes/alesharah/stylea721.css?ver=4.7.13' type='text/css' media='all' />
+    <link rel='stylesheet' id='lgc-unsemantic-grid-responsive-tablet-css' href='../wp-content/plugins/lightweight-grid-columns/css/unsemantic-grid-responsive-tabletac14.css?ver=0.7' type='text/css' media='all' />
+    
+    <!-- jQuery -->
+    <script type='text/javascript' src='../wp-includes/js/jquery/jqueryb8ff.js?ver=1.12.4'></script>
+    <script type='text/javascript' src='../wp-includes/js/jquery/jquery-migrate.min330a.js?ver=1.4.1'></script>
+    
+    <!--[if lt IE 9]>
+    <script type='text/javascript' src='http://http://alesharahfashions.com/wp-content/themes/alesharah/js/html5.js?ver=3.7.3'></script>
+    <![endif]-->
+    
+    <link rel='https://api.w.org/' href='../wp-json/index.html' />
+    <link rel="EditURI" type="application/rsd+xml" title="RSD" href="../xmlrpc0db0.php?rsd" />
+    <link rel="wlwmanifest" type="application/wlwmanifest+xml" href="../wp-includes/wlwmanifest.xml" /> 
+    <meta name="generator" content="WordPress 4.7.13" />
+    <link rel="canonical" href="index.html" />
+    <link rel='shortlink' href='../indexa1ca.html?p=15' />
+    <link rel="alternate" type="application/json+oembed" href="../wp-json/oembed/1.0/embed81d3.json?url=http%3A%2F%2Fhttp://alesharahfashions.com%2Fproducts%2F" />
+    <link rel="alternate" type="text/xml+oembed" href="../wp-json/oembed/1.0/embed2709?url=http%3A%2F%2Fhttp://alesharahfashions.com%2Fproducts%2F&amp;format=xml" />
+    
+    <!--[if lt IE 9]>
+        <link rel="stylesheet" href="http://http://alesharahfashions.com/wp-content/plugins/lightweight-grid-columns/css/ie.min.css" />
+    <![endif]-->
+    
+    <!-- HTML5 shim and Respond.js for IE8 support -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body class="page-template page-template-template-parts page-template-product page-template-template-partsproduct-php page page-id-15">
+    <div id="loading"></div>
+    
+    <header>
+        <nav class="navbar navbar-default navbar-site">
+            <div class="container-fluid"> 
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"> 
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span> 
+                        <span class="icon-bar"></span> 
+                    </button>
+                    <a class="navbar-brand visible-xs" href="../index.html"><img class="logo" src="../wp-content/uploads/2017/05/logo-white.svg" alt="logo white version"/></a> 
+                </div>
+                
+                <div class="collapse navbar-collapse custom-nav" id="bs-example-navbar-collapse-1">
+                    <ul class="navbar nav-justified">
+                        <li><a href="../index.html"><img class="logo" src="../wp-content/uploads/2017/05/logo.svg" alt="logo"/></a></li>
+                        <li id="menu-item-22" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-22"><a href="../about/index.html">About</a></li>
+                        <li id="menu-item-21" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-21"><a href="../services/index.html">Unit & Services</a></li>
+                        <li id="menu-item-25" class="menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-15 current_page_item menu-item-25 active"><a href="index.html">Products Gallery</a></li>
+                        <li id="menu-item-24" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-24"><a href="../career/index.html">Career</a></li>
+                        <li id="menu-item-23" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-23"><a href="../contact/index.html">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <section class="para para-content" style="background-image:url(../wp-content/uploads/2017/05/para-bg.jpg);">
+        <div class="container">
+            <h2>Products Gallery</h2>
+        </div>
+    </section>
+    
+    <section class="product">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+                    <div class="intro-txt text-center">
+                        <h1>Our Products</h1>
+                        <p>Al esharah fashion Ltd is capable of producing all types of knit, woven garments &amp; we have embroidery, print, Hand work, Accessories and software unit.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="container">
+                <div class="row">
+                    <div class="gallery col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <h1 class="gallery-title">Products Gallery</h1>
+                    </div>
+                    
+                    <div align="center" id="filter-buttons">
+                        <button class="btn btn-default filter-button active" data-filter="all">All</button>
+                        <button class="btn btn-default filter-button" data-filter="Woven">Woven</button>
+                        <button class="btn btn-default filter-button" data-filter="Knit">Knit</button>
+                        <button class="btn btn-default filter-button" data-filter="hand_work">Hand Work</button>
+                        <button class="btn btn-default filter-button" data-filter="Embroidery">Embroidery</button>
+                        <button class="btn btn-default filter-button" data-filter="Print">Print</button>
+                        <button class="btn btn-default filter-button" data-filter="Accessories">Accessories</button>
+                    </div>
+                    <br/>
+                    
+                    <!-- Loading Indicator -->
+                    <div id="loading-indicator" class="loading-indicator" style="display: none;">
+                        <div class="loading-spinner"></div>
+                        <p>Loading gallery...</p>
+                    </div>
+                    
+                    <!-- No Images Message -->
+                    <div id="no-images" class="no-images">
+                        <h3>No Images Found</h3>
+                        <p>Please check your folder structure and ensure images are named correctly.</p>
+                        <pre>
+products_gallery/
+├── Woven/ (1.jpg, 2.jpg, ...)
+├── Knit/
+├── Hand work/
+├── Embo/
+├── Print/
+└── Accessories/
+                        </pre>
+                    </div>
+                    
+                    <!-- Gallery Container -->
+                    <div class="row gallery-container" id="gallery-container">
+                        <!-- Images will be loaded dynamically here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <footer class="wow fadeIn animated">
+        <div id="minfooter"></div>
+    </footer>
+    
+    <!-- JavaScript Files -->
+    <script type='text/javascript' src='../wp-content/plugins/contact-form-7/includes/js/jquery.form.mind03d.js?ver=3.51.0-2014.06.20'></script>
+    <script type='text/javascript'>
+    /* <![CDATA[ */
+    var _wpcf7 = {"recaptcha":{"messages":{"empty":"Please verify that you are not a robot."}}};
+    /* ]]> */
+    </script>
+    <script type='text/javascript' src='../wp-content/plugins/contact-form-7/includes/js/scripts4906.js?ver=4.7'></script>
+    <script type='text/javascript' src='../wp-content/themes/alesharah/js/skip-link-focus-fix8de4.js?ver=20160816'></script>
+    <script type='text/javascript'>
+    /* <![CDATA[ */
+    var screenReaderText = {"expand":"expand child menu","collapse":"collapse child menu"};
+    /* ]]> */
+    </script>
+    <script type='text/javascript' src='../wp-content/themes/alesharah/js/functions8de4.js?ver=20160816'></script>
+    <script type='text/javascript' src='../wp-content/themes/alesharah/js/jquery.min21eb.js?ver=16052017'></script>
+    <script type='text/javascript' src='../wp-content/themes/alesharah/js/bootstrap.min21eb.js?ver=16052017'></script>
+    <script type='text/javascript' src='../wp-content/themes/alesharah/js/owl.carousel21eb.js?ver=16052017'></script>
+    <script type='text/javascript' src='../wp-content/themes/alesharah/js/wow.min21eb.js?ver=16052017'></script>
+    <script type='text/javascript' src='../wp-content/themes/alesharah/js/jquery.nicescroll.min21eb.js?ver=16052017'></script>
+    <script type='text/javascript' src='../wp-content/themes/alesharah/js/jquery.vide21eb.js?ver=16052017'></script>
+    <script type='text/javascript' src='../wp-content/themes/alesharah/js/modernizr.customf2c1.js?ver=29052017'></script>
+    <script type='text/javascript' src='../wp-content/themes/alesharah/js/gridf2c1.js?ver=29052017'></script>
+    <script type='text/javascript' src='../wp-content/themes/alesharah/js/scripts21eb.js?ver=16052017'></script>
+    <script type='text/javascript' src='../wp-includes/js/wp-embed.mina721.js?ver=4.7.13'></script>
+    
+    <!-- Magnific Popup JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+    
+    <!-- Custom Gallery JS -->
+    <script src="js/gallery.js"></script>
+    
+    <script>
+        $(window).on("scroll touchmove", function () {
+            var header = $('header').height();	
+            $('.navbar-site').toggleClass('tiny', $(document).scrollTop() > header);
+            if($(document).scrollTop() < header){
+                $('.logo').attr("src", "../wp-content/themes/alesharah/images/logo.svg");
+            }
+            if($(document).scrollTop() > header){
+                $('.logo').attr("src", "../wp-content/themes/alesharah/images/logo.svg");
+            }
+        });
+        
+        $(function() {
+            if (typeof Grid !== 'undefined') {
+                Grid.init();
+            }
+        });
+    </script>
+    
+    <script type='text/javascript' src='../wp-includes/js/footer.js'></script>
+</body>
+</html>

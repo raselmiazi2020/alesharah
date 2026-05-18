@@ -8,7 +8,7 @@
 <title>Al Esharah Fashion | Garments Manufacturer Bangladesh</title>
 
 <!-- ✅ META DESCRIPTION -->
-<meta name="description" content="Premium garments manufacturer in Bangladesh: Panjabi, Saudi thobe, bomber jacket, ladies kameez, formal shirts, export apparel. Factory direct wholesale & BSCI certified.">
+<meta name="description" content="Premium Panjabi, shirts, tops, kameez & thobe from Bangladesh. Quality garments at affordable prices.">
 
 <!-- ✅ META KEYWORDS -->
 <meta name="keywords" content="Al Esharah Fashion, garments manufacturer Bangladesh, Panjabi manufacturer, Saudi thobe, Omani khaleej, Dubai thobe, Jubba supplier, Eid Panjabi, microl fabric Panjabi, Pakistani Panjabi, Kabli Panjabi, men's casual shirt, formal shirt, slim fit shirt, printed shirt, check shirt, bomber jacket, padded jacket, shacket, ladies tops, 3 piece kameez, ladies pajama, shawl, pencil pant, evening gown, bridal gown, wedding dress, party dress, prom dress, business suit, handbag, wallet, jewellery, woven garments factory, custom clothing manufacturer, wholesale apparel Bangladesh, export quality RMG, factory direct price, Narayanganj garments, Gazipur factory, BSCI certified manufacturer, OEM clothing supplier, private label Panjabi">
@@ -64,7 +64,7 @@ function addMeta(name, content) {
 
 addMeta(
 "description",
-"Al Esharah Fashion Ltd – Premium garments manufacturer in Bangladesh. We produce Panjabi, Saudi thobe, Omani khaleej, bomber jacket, ladies 3 piece kameez, evening gown, shirt, and accessories. Factory direct wholesale & export. BSCI certified. Order bulk now."
+"Al Esharah Fashion Ltd – Premium garments manufacturer in Bangladesh. We produce Panjabi, shirt, tops, kameez, thobe, bomber jacket, ladies 3 piece kameez, evening gown and export apparel. Factory direct wholesale & export. BSCI certified. Order bulk now."
 );
 
 addMeta(
@@ -188,6 +188,36 @@ script.text = JSON.stringify(schema);
 
 document.head.appendChild(script);
 
+// ===============================
+// LocalBusiness Structured Data (improves GEO & Buying House visibility)
+// ===============================
+const localSchema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": "Al Esharah Fashion Ltd",
+  "image": "https://www.alesharahfashions.com/logo.png",
+  "telephone": ["+8801815246362", "+8801771558007"],
+  "email": "sabbir@alesharahfashionss.com",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "3/41.kh Sorkar bari Khilkhet nikunja-2",
+    "addressLocality": "Dhaka",
+    "addressRegion": "Dhaka",
+    "postalCode": "1229",
+    "addressCountry": "BD"
+  },
+  "description": "Buying House and garment sourcing services in Bangladesh. Garment buying house Dhaka, apparel sourcing agent Bangladesh, factory sourcing Bangladesh.",
+  "areaServed": "Global",
+  "sameAs": [
+    "https://www.facebook.com/alesharahfashions"
+  ]
+};
+
+const localScript = document.createElement("script");
+localScript.type = "application/ld+json";
+localScript.text = JSON.stringify(localSchema);
+document.head.appendChild(localScript);
+
 
 // ===============================
 // AUTO IMAGE ALT SEO
@@ -240,7 +270,7 @@ seoText.innerHTML = `
   <p>Al Esharah Fashion Ltd supplies premium Panjabi, Saudi thobe, Omani khaleej, Dubai thobe, bomber jacket, shacket, ladies 3 piece kameez, evening gown, formal shirt and export quality apparel from Bangladesh.</p>
 `;
 
-document.body.appendChild(seoText);
+<p hidden>document.body.appendChild(seoText);</p>
 
 
 // ===============================
@@ -267,9 +297,13 @@ Best Clothing Manufacturer in Bangladesh
 </h2>
 
 <p hidden>
-Al Esharah Fashion is a trusted garments manufacturer
-specializing in thobe, panjabi, shirts, jackets,
-ladies fashion and apparel export worldwide.
+Al Esharah Fashion is a leading Bangladesh garments manufacturer and apparel exporter providing premium-quality clothing solutions for global fashion brands, wholesalers, retailers, and private label businesses. We specialize in thobes, panjabi, shirts, polo shirts, t-shirts, tops, kameez, abaya, hoodies, jackets, denim wear, knitwear, woven garments, sportswear, kids wear, ladies fashion, men’s fashion, modest fashion, Islamic clothing, casual wear, corporate uniforms, streetwear, luxury apparel, boutique fashion, and custom clothing manufacturing.
+
+Our services include garment sourcing, apparel design, product development, pattern making, sampling, cutting, sewing, stitching, embroidery, screen printing, digital printing, sublimation printing, heat transfer printing, washing, finishing, quality control, ironing, packaging, labeling, hang tags, woven labels, neck labels, private labeling, OEM & ODM manufacturing, bulk production, fashion merchandising, trims and accessories sourcing, buttons, zippers, elastic, ribbons, fabrics, sustainable textiles, eco-friendly clothing production, export documentation, and worldwide apparel shipping.
+
+Esharah Fashion delivers export-quality ready-made garments (RMG) with competitive pricing, modern production facilities, skilled craftsmanship, fast delivery, and international quality standards. We serve clients across the USA, UK, Europe, Middle East, Saudi Arabia, UAE, Qatar, Kuwait, Oman, Malaysia, and worldwide markets with reliable apparel manufacturing and fashion export solutions.
+
+Keywords: Bangladesh garments factory, clothing manufacturer Bangladesh, apparel exporter, private label clothing manufacturer, OEM garments supplier, custom apparel manufacturer, wholesale fashion supplier, thobe manufacturer, panjabi supplier, Islamic clothing exporter, ladies garments factory, men’s wear manufacturer, fashion apparel exporter, textile company Bangladesh, bulk clothing production, custom embroidery services, garment printing services, fashion accessories supplier, sustainable apparel manufacturing, export-quality garments Bangladesh.
 </p>
 
 `;
@@ -528,9 +562,9 @@ img.emoji {
       	 <div class="col-xs-12 col-sm-8 col-md-8">
 
          	<section class="banner" data-vide-bg="wp-content/handsake.webm" data-vide-options="position: 0% 10%">
-  <div class="banner-content text-center">
-    <h1>Al Esharah Fashion Ltd — Premium Garments Manufacturer in Bangladesh</h1>
-    <p>Al Esharah Fashion Ltd is a premium garments manufacturer in Bangladesh with factory direct export for Panjabi, Saudi thobe, Omani khaleej, Dubai thobe, bomber jacket, ladies 3 piece kameez, formal shirts and export apparel.</p>
+  <div  class="banner-content text-center">
+    <h1 hidden>Al Esharah Fashion Ltd — Premium Garments Manufacturer in Bangladesh</h1>
+    <p hidden>Al Esharah Fashion Ltd is a premium garments manufacturer in Bangladesh with factory direct export for Panjabi, Saudi thobe, Omani khaleej, Dubai thobe, bomber jacket, ladies 3 piece kameez, formal shirts and export apparel.</p>
   </div>
 </section>
 
@@ -548,9 +582,17 @@ img.emoji {
               </div>
             </section>
 
-         </div>
+            <section id="buying-house-landing" class="buying-house" style="padding:30px 0; background:#f9f9f9;">
+              <div class="container">
+                <h2>Buying House &amp; Sourcing — Dhaka, Bangladesh</h2>
+                <p>Al Esharah Fashion Ltd operates a dedicated Buying House and Trading Unit in Dhaka to support apparel sourcing, supplier selection and order coordination. As an experienced <strong>garment buying house in Bangladesh</strong>, we help buyers connect with reliable factories, manage samples, negotiate costs and plan export shipments. Our team acts as your <em>apparel sourcing agent in Bangladesh</em>, providing factory sourcing, product costing and quality control for private label and branded collections.</p>
+                <p>If you search for "<em>garment buying house dhaka</em>", "<em>apparel sourcing agent bangladesh</em>" or "<em>factory sourcing bangladesh</em>", you will find our buying house services tailored for international buyers. We support bulk orders, small runs, and subcontract factory work with strict inspection and compliance.</p>
+                <p><strong>Contact Buying House:</strong> <a href="mailto:sabbir@alesharahfashionss.com">sabbir@alesharahfashionss.com</a> | <a href="tel:+8801815246362">+8801815246362</a> | <a href="tel:+8801771558007">+8801771558007</a></p>
+                <a href="contact/index.html" class="see-more primery">Contact Buying House</a>
+              </div>
+            </section>
 
-         <div class="col-xs-12 col-sm-4 col-md-4 wow fadeIn animated">
+         </div>
 
           <div class="about-content text-center"> 
 

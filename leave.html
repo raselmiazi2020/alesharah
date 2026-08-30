@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ছুটির আবেদন জেনারেটর - আল-ইশারাহ</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            padding: 20px;
+        }
+        .container {
+            max-width: 750px;
+            background: #fff;
+            padding: 30px;
+            margin: 20px auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #1a73e8;
+            margin-bottom: 25px;
+            font-size: 24px;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #444;
+        }
+        input, select {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #cccccc;
+            border-radius: 6px;
+            font-size: 15px;
+            transition: border-color 0.2s;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #1a73e8;
+        }
+        .submit-btn {
+            width: 100%;
+            background-color: #1a73e8;
+            color: white;
+            padding: 13px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: background 0.2s;
+        }
+        .submit-btn:hover {
+            background-color: #1557b0;
+        }
+        .output-box {
+            margin-top: 30px;
+            padding: 25px;
+            background: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            display: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .output-header {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #1a73e8;
+        }
+        .output-text {
+            white-space: pre-line;
+            line-height: 1.8;
+            font-size: 16px;
+            color: #222;
+            background: #fafafa;
+            padding: 20px;
+            border-radius: 6px;
+            border: 1px solid #eee;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .action-btn {
+            flex: 1;
+            min-width: 140px;
+            padding: 11px;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
+            text-align: center;
+            transition: opacity 0.2s;
+        }
+        .action-btn:hover {
+            opacity: 0.9;
+        }
+        .btn-copy { background-color: #28a745; }
+        .btn-print { background-color: #17a2b8; }
+        .btn-download { background-color: #ffc107; color: #212529; }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .container { box-shadow: none; padding: 0; margin: 0; max-width: 100%; }
+            .form-group, h2, .submit-btn, .action-buttons, .output-header { display: none !important; }
+            .output-box { display: block !important; border: none; padding: 0; box-shadow: none; }
+            .output-text { background: white; border: none; padding: 0; font-size: 16pt; line-height: 1.8; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>ছুটির আবেদন জেনারেটর (Alesharah)</h2>
+    
+    <div class="form-group">
+        <label for="appType">আবেদনের ধরন নির্বাচন করুন:</label>
+        <select id="appType">
+            <option value="advance">ছুটি কাটানোর আগে (Advance Leave Application)</option>
+            <option value="post">ছুটি কাটানোর পরে / কাজে যোগদান (Post-Leave Joining Application)</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="empName">কর্মচারীর নাম:</label>
+        <input type="text" id="empName" placeholder="যেমন: মো: আব্দুর রহিম">
+    </div>
+
+    <div class="form-group">
+        <label for="empId">আইডি নম্বর (ID Number):</label>
+        <input type="text" id="empId" placeholder="যেমন: ALE-1020">
+    </div>
+
+    <div class="form-group">
+        <label for="leaveReason">ছুটির কারণ:</label>
+        <select id="leaveReason">
+            <option value="অসুস্থতাজনিত কারণ">অসুস্থতাজনিত কারণ (Sick Leave)</option>
+            <option value="পারিবারিক প্রয়োজন">পারিবারিক কারণ (Family Reason)</option>
+            <option value="জরুরী ব্যক্তিগত কাজ">জরুরী ব্যক্তিগত কাজ (Personal Work)</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="startDate">ছুটির শুরুর তারিখ:</label>
+        <input type="date" id="startDate" onchange="calculateDays()">
+    </div>
+
+    <div class="form-group">
+        <label for="endDate">ছুটির শেষের তারিখ:</label>
+        <input type="date" id="endDate" onchange="calculateDays()">
+    </div>
+
+    <div class="form-group">
+        <label for="totalDays">মোট ছুটির দিনসংখ্যা:</label>
+        <input type="text" id="totalDays" placeholder="তারিখ দিলে অটোমেটিক আসবে বা টাইপ করুন" min="1">
+    </div>
+
+    <button class="submit-btn" onclick="generateLetter()">আবেদনপত্র তৈরি করুন</button>
+
+    <div class="output-box" id="outputBox">
+        <div class="output-header">তৈরিকৃত আবেদনপত্র:</div>
+        <div class="output-text" id="outputText"></div>
+        
+        <div class="action-buttons">
+            <button class="action-btn btn-copy" onclick="copyText()">টেক্সট কপি করুন</button>
+            <button class="action-btn btn-print" onclick="printLetter()">প্রিন্ট করুন (Print)</button>
+            <button class="action-btn btn-download" onclick="downloadTxt()">ডাউনলোড করুন (.txt)</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ইংরেজি সংখ্যাকে বাংলা সংখ্যায় রূপান্তর করার ফাংশন
+    function toBanglaNum(num) {
+        if (!num) return '';
+        const banglaDigits = {'0':'০', '1':'১', '2':'২', '3':'৩', '4':'৪', '5':'৫', '6':'৬', '7':'৭', '8':'৮', '9':'৯'};
+        return num.toString().replace(/[0-9]/g, function(w) {
+            return banglaDigits[w];
+        });
+    }
+
+    // তারিখ ফরম্যাট করে বাংলা করার ফাংশন (YYYY-MM-DD to DD/MM/YYYY in Bangla)
+    function formatBanglaDate(dateString) {
+        if (!dateString) return '[তারিখ]';
+        const parts = dateString.split('-');
+        if (parts.length !== 3) return dateString;
+        const day = toBanglaNum(parts[2]);
+        const month = toBanglaNum(parts[1]);
+        const year = toBanglaNum(parts[0]);
+        return `${day}/${month}/${year}`;
+    }
+
+    // স্বয়ংক্রিয় দিন গণনার ফাংশন
+    function calculateDays() {
+        const startVal = document.getElementById('startDate').value;
+        const endVal = document.getElementById('endDate').value;
+
+        if (startVal && endVal) {
+            const start = new Date(startVal);
+            const end = new Date(endVal);
+
+            if (end >= start) {
+                const diffTime = Math.abs(end - start);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+                document.getElementById('totalDays').value = diffDays;
+            }
+        }
+    }
+
+    function generateLetter() {
+        const appType = document.getElementById('appType').value;
+        const name = document.getElementById('empName').value || '[আপনার নাম]';
+        const rawId = document.getElementById('empId').value || '[আপনার আইডি]';
+        const id = toBanglaNum(rawId); // আইডি নম্বরে থাকা সংখ্যা বাংলা করা
+        const reason = document.getElementById('leaveReason').value;
+        
+        const startDate = formatBanglaDate(document.getElementById('startDate').value);
+        const endDate = formatBanglaDate(document.getElementById('endDate').value);
+        
+        const rawTotalDays = document.getElementById('totalDays').value || '[দিনসংখ্যা]';
+        const totalDays = toBanglaNum(rawTotalDays); // মোট দিনসংখ্যা বাংলা করা
+
+        const today = new Date().toLocaleDateString('bn-BD', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        let letter = "";
+
+        if (appType === "advance") {
+            letter = `তারিখ: ${today}
+
+বরাবর,
+ব্যবস্থাপক / মানবসম্পদ বিভাগ
+আল-ইশারাহ (Alesharah)
+
+বিষয়: অগ্রিম ছুটির জন্য আবেদন।
+
+জনাব,
+বিনীত নিবেদন এই যে, আমি আপনার প্রতিষ্ঠানে কর্মরত একজন নিয়মিত কর্মচারী। 
+
+আমার ${reason}-এর জন্য আগামী ${startDate} হতে ${endDate} তারিখ পর্যন্ত মোট ${totalDays} দিন ছুটির প্রয়োজন। উক্ত সময়ে আমি কর্মস্থলে উপস্থিত থাকতে পারব না।
+
+অতএব, মহোদয়ের নিকট আকুল আবেদন, বিষয়টি বিবেচনা করে আমাকে উক্ত ${totalDays} দিনের অগ্রিম ছুটি মঞ্জুর করে বাধিত করবেন।
+
+বিনীত,
+নাম: ${name}
+আইডি নম্বর: ${id}`;
+        } else {
+            letter = `তারিখ: ${today}
+
+বরাবর,
+ব্যবস্থাপক / মানবসম্পদ বিভাগ
+আল-ইশারাহ (Alesharah)
+
+বিষয়: ছুটি ভোগ শেষে পুন:যোগদান এবং ছুটি মঞ্জুরের আবেদন।
+
+জনাব,
+বিনীত নিবেদন এই যে, আমি আপনার প্রতিষ্ঠানে কর্মরত একজন নিয়মিত কর্মচারী। 
+
+আমি আমার ${reason}-এর কারণে গত ${startDate} হতে ${endDate} তারিখ পর্যন্ত মোট ${totalDays} দিন কর্মস্থলে উপস্থিত থাকতে পারিনি। ছুটি কাটানো শেষে আমি আজ পুন:রায় নিজ দায়িত্বে কর্মস্থলে যোগদানের জন্য উপস্থিত হয়েছি।
+
+অতএব, মহোদয়ের নিকট আকুল আবেদন, উক্ত ${totalDays} দিনের ছুটি অনুমোদনপূর্বক আমাকে পুনরায় কাজে যোগদানের অনুমতি প্রদান করে বাধিত করবেন।
+
+বিনীত,
+নাম: ${name}
+আইডি নম্বর: ${id}`;
+        }
+
+        document.getElementById('outputText').innerText = letter;
+        document.getElementById('outputBox').style.display = 'block';
+    }
+
+    function copyText() {
+        const textToCopy = document.getElementById('outputText').innerText;
+        navigator.clipboard.writeText(textToCopy);
+        alert('আবেদনপত্রটি সফলভাবে কপি হয়েছে!');
+    }
+
+    function printLetter() {
+        window.print();
+    }
+
+    function downloadTxt() {
+        const textToDownload = document.getElementById('outputText').innerText;
+        const blob = new Blob([textToDownload], { type: 'text/plain;charset=utf-8' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'Leave_Application_Alesharah.txt';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+</script>
+
+</body>
+</html>

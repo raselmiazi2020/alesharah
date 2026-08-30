@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>চাকরি ছাড়ার আবেদনপত্র</title>
+
+<style>
+body{
+    font-family: SolaimanLipi, Arial, sans-serif;
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 20px;
+    background:#f5f5f5;
+}
+
+.container{
+    background:#fff;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+h2{
+    text-align:center;
+}
+
+label{
+    font-weight:bold;
+}
+
+input{
+    width:100%;
+    padding:10px;
+    margin-top:5px;
+    margin-bottom:15px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    box-sizing:border-box;
+}
+
+button{
+    padding:10px 20px;
+    margin-right:10px;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.generate-btn{
+    background:#28a745;
+    color:#fff;
+}
+
+.print-btn{
+    background:#007bff;
+    color:#fff;
+}
+
+#application{
+    display:none;
+    margin-top:30px;
+    padding:40px;
+    background:#fff;
+    border:1px solid #ddd;
+    line-height:1.9;
+}
+
+.signature{
+    margin-top:50px;
+}
+
+@media print{
+
+    body{
+        background:#fff;
+    }
+
+    .container > *:not(#application){
+        display:none;
+    }
+
+    #application{
+        display:block !important;
+        border:none;
+        margin:0;
+        padding:0;
+    }
+
+    button{
+        display:none;
+    }
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<h2>চাকরি ছাড়ার আবেদনপত্র</h2>
+
+<label>কোম্পানির নাম</label>
+<input type="text" id="company">
+
+<label>নাম</label>
+<input type="text" id="name">
+
+<label>পদবী</label>
+<input type="text" id="designation">
+
+<label>কর্মী আইডি</label>
+<input type="text" id="employeeId">
+
+<label>বিভাগ</label>
+<input type="text" id="department">
+
+<label>তারিখ</label>
+<input type="date" id="date">
+
+<button class="generate-btn" onclick="generateApplication()">
+আবেদনপত্র তৈরি করুন
+</button>
+
+<button class="print-btn" onclick="printApplication()">
+প্রিন্ট করুন
+</button>
+
+<div id="application"></div>
+
+</div>
+
+<script>
+
+function generateApplication(){
+
+    let company = document.getElementById("company").value;
+    let name = document.getElementById("name").value;
+    let designation = document.getElementById("designation").value;
+    let employeeId = document.getElementById("employeeId").value;
+    let department = document.getElementById("department").value;
+    let date = document.getElementById("date").value;
+
+    document.getElementById("application").style.display="block";
+
+    document.getElementById("application").innerHTML = `
+
+        <p>বরাবর</p>
+
+        <p>
+        ব্যবস্থাপনা পরিচালক / মানব সম্পদ বিভাগ<br>
+        ${company}
+        </p>
+
+        <p>
+        <strong>বিষয়: চাকরি থেকে পদত্যাগের আবেদন।</strong>
+        </p>
+
+        <p>জনাব/জনাবা,</p>
+
+        <p>
+        বিনীত নিবেদন এই যে, আমি <strong>${name}</strong>,
+        <strong>${designation}</strong> পদে আপনার প্রতিষ্ঠানে কর্মরত আছি।
+        ব্যক্তিগত কারণে আমি আমার বর্তমান চাকরি থেকে পদত্যাগ করার সিদ্ধান্ত নিয়েছি।
+        </p>
+
+        <p>
+        অতএব, আমাকে চাকরি থেকে অব্যাহতি প্রদান করে আমার সকল পাওনা
+        পরিশোধের ব্যবস্থা করার জন্য আপনার সদয় বিবেচনা কামনা করছি।
+        এজন্য আমি আপনার নিকট কৃতজ্ঞ থাকব।
+        </p>
+
+        <p>
+        ধন্যবাদান্তে,
+        </p>
+
+        <div class="signature">
+
+        <p>
+        বিনীত নিবেদক
+        </p>
+
+        <p>
+        <strong>নাম:</strong> ${name}<br>
+        <strong>পদবী:</strong> ${designation}<br>
+        <strong>কর্মী আইডি:</strong> ${employeeId}<br>
+        <strong>বিভাগ:</strong> ${department}<br>
+        <strong>তারিখ:</strong> ${date}
+        </p>
+
+        <br><br>
+
+        <p>
+        স্বাক্ষর: ____________________
+        </p>
+
+        </div>
+
+    `;
+}
+
+function printApplication(){
+
+    let content = document.getElementById("application").innerHTML;
+
+    if(content==""){
+        alert("প্রথমে আবেদনপত্র তৈরি করুন");
+        return;
+    }
+
+    window.print();
+}
+
+</script>
+
+</body>
+</html>

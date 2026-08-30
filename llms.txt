@@ -1,61 +1,79 @@
-# LLMs.txt - Large Language Model Optimization
+# Al Esharah Fashion Ltd
+Al Esharah Fashion is a leading garments manufacturer and apparel exporter based in Bangladesh, providing premium-quality clothing solutions for global fashion brands, wholesalers, retailers, and private label businesses.
 
-## Organization Info
+## Core Specializations
+- Modest Fashion: Thobes, Saudi thobe, Omani khaleej, Dubai thobe, Jubba, Abaya.
+- Traditional & Casual: Panjabi, shirts, polo shirts, t-shirts, jackets, and hoodies.
+- Services: Garment sourcing, apparel design, manufacturing, embroidery, printing, and custom private label production.
 
-**Organization Name:** Al Esharah Fashion Ltd  
-**Website:** https://www.alesharahfashions.com  
-**Location:** Bangladesh  
-**Business Type:** Premium Garments Manufacturer and Exporter  
-
-## Key Services
-
-- **Buying House/Trading Unit**: Global apparel sourcing, supplier selection, cost negotiation and order coordination
-- **Manufacturing Unit**: Woven and knit apparel production, Panjabi, thobe, jackets, formal shirts, ladies kameez
-- **Embroidery Unit**: Premium apparel decoration with flat stitch, sequin, puff, 3D embroidery, pearl, beadwork
-- **Printing Unit**: Cotton digital printing, sublimation printing, screen printing, HD print, 3D print
-- **Hand Work Unit**: Skilled manual finishing, karchupi embroidery, hand-stitched details
-- **Accessories Unit**: Trims, labels, hangtags, drawstrings, cords, elastics, sewing thread
-- **E-shop Unit**: Two online brands - Texture (ladies wear) and Omellor (men's wear)
-- **Software Development Unit**: Ecommerce websites, order management systems, digital tools
-
-## Product Categories
-
-- Panjabi (Microl fabric, Pakistani style, Kabli style, Eid collection)
-- Saudi Thobe and Omani Khaleej
-- Dubai Thobe and Jubba
-- Bomber Jackets and Padded Jackets
-- Shackets
-- Ladies 3-Piece Kameez and Tops
-- Formal Shirts and Casual Shirts
-- Evening Gowns and Bridal Wear
-- Handbags, Wallets, Jewelry, Accessories
-
-## Compliance & Certifications
-
-- BSCI Certified
-- Ethical Manufacturing Practices
-- Quality Control Standards
-- Export-Ready Production
-- Social Compliance Across Units
-
-## Target Markets
-
-- Fashion Brands (Global)
-- Wholesalers and Distributors
-- Private Label Apparel Buyers
-- Ecommerce Retailers
-- Direct Export Customers
+## Key Pages
+- [About Us](https://www.alesharahfashions.com/about) - Learn about our 13+ years of experience and manufacturing capabilities.
+- [Products Gallery](https://www.alesharahfashions.com/products) - View our range of export-quality garments and apparel.
+- [Services](https://www.alesharahfashions.com/services) - Details on our manufacturing, design, and sourcing services.
+- [Contact Us](https://www.alesharahfashions.com/contact) - Get in touch for bulk orders, wholesale inquiries, and partnerships.
 
 ## Manufacturing Capabilities
+We operate with modern production facilities, BSCI compliance, and ethical standards to serve markets across the USA, UK, Europe, and the Middle East. We specialize in custom apparel production and OEM services.
 
-- Custom Apparel Production
-- OEM/ODM Services
-- Bulk Garment Orders
-- Sample Development
-- Quality Inspection
-- On-Time Shipments
-- Factory Direct Pricing
 
-## Company Mission
 
-Al Esharah Fashion Ltd is committed to providing premium garment manufacturing, ethical compliance, and responsive support to brands, wholesalers and private label businesses seeking dependable apparel sourcing from Bangladesh.
+
+
+# llms.txt for Al Esharah Fashion Ltd
+
+User-agent: *
+Allow: /
+
+Site: https://www.alesharahfashions.com
+Company: Al Esharah Fashion Ltd
+Industry: Garment Manufacturing and Apparel Sourcing
+Location: Bangladesh
+
+Description:
+Al Esharah Fashion Ltd is a garment manufacturer and apparel sourcing company in Bangladesh specializing in private label clothing, modest fashion, thobes, abayas, panjabi, t-shirts, polo shirts, hoodies, jackets, and OEM apparel production for global buyers.
+
+Main Services:
+- Garment Manufacturing
+- Apparel Sourcing
+- Private Label Production
+- Embroidery
+- Printing
+- OEM Clothing Manufacturing
+- Fashion Export
+
+Important Pages:
+https://www.alesharahfashions.com/
+https://www.alesharahfashions.com/about
+https://www.alesharahfashions.com/services
+https://www.alesharahfashions.com/products
+https://www.alesharahfashions.com/contact
+
+Sitemap:
+https://www.alesharahfashions.com/sitemap.xml
+# AI Access Policy for Al Esharah Fashion Ltd
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: YouBot
+Allow: /
+
+# Website Information
+Site-name: Al Esharah Fashion Ltd
+Site-url: https://www.alesharahfashions.com
+Description: Garment manufacturing, apparel sourcing, private label clothing production, and fashion export services from Bangladesh.
+Owner: Al Esharah Fashion Ltd
+Industry: Garment Manufacturing & Apparel Sourcing
+Country: Bangladesh
